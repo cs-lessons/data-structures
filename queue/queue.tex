@@ -1,0 +1,53 @@
+\documentclass[11pt]{book}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{makecell}
+
+\begin{document}
+	\chapter{Queues}
+	\section{Introduction}
+		\textbf{Queues} are one of the simplest data structures that one will
+		learn about. Most likely you have heard the word \textbf{queue} in the
+		context of a waiting line or such. The idea of a \textbf{queue} in
+		Computer Science is really no different.
+
+	\section{Description}
+		\textbf{Queues} work in a FIFO (first-in first-out) manner. This simply
+		means that the first thing into the \textbf{queue} will be the first
+		thing out, or if extended, items that enter the \textbf{queue} earlier
+		exit the \textbf{queue} earlier. To build on the waiting line example,
+		someone who lines up earlier than you will reach the end of the
+		\textbf{queue} and exit earlier than you.
+
+	\section{Implementation}
+		To support this behaviour, \textbf{queues} implement the following
+		methods:\footnote{Depending on your programming language, the method
+		names may not be accurate. Nonetheless, there should be methods that
+		provide identical functionality}
+		\begin{itemize}
+			\item \textbf{enqueue} \\
+				\textbf{Enqueue} is used to add elements to the back of the
+				\textbf{queue}
+			\item \textbf{dequeue} \\
+				\textbf{Dequeue} is used to remove elements from the front of
+				the \textbf{queue}
+		\end{itemize}
+		
+	\section{Examples}
+		\begin{enumerate}
+			\item Enqueueing \\
+				Starting with the following \textbf{queue} (arrows point towards
+				the front), \textbf{enqueue} 3.
+				\[
+					8 \rightarrow 9 \rightarrow 0
+				\]
+				\[
+					Ans: 3 \rightarrow 8 \rightarrow 9 \rightarrow 0
+				\]
+			\item Dequeueing \\
+				What do you get when you \textbf{dequeue} from the previous
+				solution?
+				\[
+					Ans: 0
+				\]
+		\end{enumerate}
+\end{document}

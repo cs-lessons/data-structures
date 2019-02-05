@@ -1,0 +1,53 @@
+\documentclass[11pt]{book}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{makecell}
+
+\begin{document}
+	\setcounter{chapter}{1}
+	\chapter{Stacks}
+	\section{Introduction}
+		The \textbf{stack} is another simple yet pervasive data structure. You
+		may have heard the word \textbf{stack} used to refer to a pile of things,
+		for example, a stack of books. This comparison can be used to easily
+		understand the functionality of a \textbf{stack}.
+
+		Also, \textbf{stack} may also refer to the set of technologies that are
+		being used for a project. Make sure not to confuse the two, we are
+		talking about data structures here.
+
+	\section{Description}
+		\textbf{Stacks} work in a LIFO (last-in first-out) manner unlike the
+		\textbf{queue}. This means the last thing to enter the stack will be
+		the primary target for removal. Let's bring back the stack of books
+		comparison back; when adding to the stack of books, you put something
+		on the top, and when removing something from the stack, you also take
+		from the top.
+
+	\section{Implementation}
+		\begin{itemize}
+			\item \textbf{push} \\
+				\textbf{Push} is used to add something to the top of the stack
+			\item \textbf{pop} \\
+				\textbf{Pop} is used to remove from the top of the stack
+		\end{itemize}
+		
+	\section{Examples}
+		\begin{enumerate}
+			\item Push \\
+				\textbf{Push} 9 onto the following stack (arrows point towards
+				the top).
+				\[
+					8 \rightarrow 1 \rightarrow 0
+				\]
+				\[
+					Ans: 9 \rightarrow 8 \rightarrow 1 \rightarrow 0
+				\]
+			\item Pop \\
+				What do you get when you \textbf{pop} from the solution to the
+				previous question?
+				\[
+					Ans: 9
+				\]
+		\end{enumerate}
+
+\end{document}
