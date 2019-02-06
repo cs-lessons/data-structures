@@ -1,0 +1,304 @@
+\documentclass[11pt]{book}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{makecell}
+\usepackage{tikz}
+\usetikzlibrary{graphdrawing.trees}
+
+\begin{document}
+	\setcounter{chapter}{3}
+	\chapter{Heaps}
+	\section{Introduction}
+		The \textbf{heap} is a data structure typically used to keep track
+		of the max or minimum of a set of elements. They are typically
+		used when implementing priority queues because they can keep
+		track of the highest (or lowest) priority easily and efficiently.
+		As such, the only real similarity I can draw between the data structure
+		and its name is the appearance of its representation.
+
+	\section{Description}
+		Because the \textbf{heap} is typically drawn as a tree, it will use similar
+		terminology that can be found in the binary search tree pdf. \\
+
+		\noindent The one relationship of a \textbf{heap} is that the parent node is
+		always greater (or less depending on the kind of \textbf{heap}) than its
+		children. There is no strict relationship between any other nodes aside
+		from the fact that the relationship is transitive and it could be said
+		that a descendant node will be less than its ancestor nodes. \\
+
+		\noindent When drawn as a tree, a \textbf{heap} should always be a complete
+		binary tree. If you don't remember what that means, it means everything is
+		filled out except for the last level although that level must be filled
+		starting from the left. This structure is something that will remaing even
+		after insertion and deletion. For example, a \textbf{max heap} could look
+		like this:
+
+		\begin{center}
+			\begin{tikzpicture}[nodes={draw, circle}, ->,
+				level 1/.style={sibling distance=30mm},
+				level 2/.style={sibling distance=15mm}]
+				\node{100}
+					child{ node{99}
+						child{ node{7} }
+						child{ node{88} } }
+					child{ node{98}
+						child{ node{4} }
+						child[ missing ] };
+			\end{tikzpicture}
+		\end{center}
+
+		\noindent As we can see, for any pair of parent-child nodes, the parent's value
+		is always greater than the child's. For all the future examples, we'll be
+		using a \textbf{max heap}.
+
+	\section{Searching}
+		Remember that a the only relationship that exists in a \textbf{heap} is the
+		one between a parent and child node. How does this affect searching? At a
+		glance, we can easily find the max because it is the root, but what
+		about other values? You will actually have to traverse most of the tree
+		to determine whether a specific value exists or not, so there is not a
+		benefit to searching for a specific value.
+
+	\section{Insertion}
+		Ok, remember that we want our \textbf{heap} to stay as a complete binary
+		tree. So where should we add a node to maintain this? At the lowest level as
+		far left as we can. Consider the previously shown \textbf{heap}:
+
+		\begin{center}
+			\begin{tikzpicture}[nodes={draw, circle}, ->,
+				level 1/.style={sibling distance=30mm},
+				level 2/.style={sibling distance=15mm}]
+				\node{100}
+					child{ node{99}
+						child{ node{7} }
+						child{ node{88} } }
+					child{ node{98}
+						child{ node{4} }
+						child[ missing ] };
+			\end{tikzpicture}
+		\end{center}
+
+		\noindent Let's insert 1 into the \textbf{heap}. It will go on the lowest
+		level in the first free spot.
+
+		\begin{center}
+			\begin{tikzpicture}[nodes={draw, circle}, ->,
+				level 1/.style={sibling distance=30mm},
+				level 2/.style={sibling distance=15mm}]
+				\node{100}
+					child{ node{99}
+						child{ node{7} }
+						child{ node{88} } }
+					child{ node{98}
+						child{ node{4} }
+						child{ node{1} } };
+			\end{tikzpicture}
+		\end{center}
+
+		\noindent Well that was easy. But wait, what if we had to insert a number
+		that will end up breaking the parent child relationship? We just have to do
+		a few extra steps; let's try inserting 101 this time.
+
+		\begin{center}
+			\begin{tikzpicture}[nodes={draw, circle}, ->,
+				level 1/.style={sibling distance=30mm},
+				level 2/.style={sibling distance=15mm}]
+				\node{100}
+					child{ node{99}
+						child{ node{7}
+							child{ node{101} }
+							child[ missing ] }
+						child{ node{88} } }
+					child{ node{98}
+						child{ node{4} }
+						child{ node{1} } };
+			\end{tikzpicture}
+		\end{center}
+
+		\noindent Alright, so now we notice the relationship is broken so let's
+		just swap 101 and 7. What an easy fix!
+
+		\begin{center}
+			\begin{tikzpicture}[nodes={draw, circle}, ->,
+				level 1/.style={sibling distance=30mm},
+				level 2/.style={sibling distance=15mm}]
+				\node{100}
+					child{ node{99}
+						child{ node{101}
+							child{ node{7} }
+							child[ missing ] }
+						child{ node{88} } }
+					child{ node{98}
+						child{ node{4} }
+						child{ node{1} } };
+			\end{tikzpicture}
+		\end{center}
+
+		\noindent Uh oh, the relationship is still not satisfied! (99 < 101). Just keep
+		swapping upwards until you're good!
+
+		\begin{center}
+			\begin{tabular*}{0.75\textwidth}{@{\extracolsep{\fill}}cc}
+				\begin{tikzpicture}[nodes={draw, circle}, ->,
+					level 1/.style={sibling distance=30mm},
+					level 2/.style={sibling distance=15mm}]
+					\node(c){100}
+						child{ node(b){99}
+							child{ node(a){101}
+								child{ node{7} }
+								child[ missing ] }
+							child{ node{88} } }
+						child{ node{98}
+							child{ node{4} }
+							child{ node{1} } };
+					\path[]
+						(a) edge[bend left] node[left, draw=none] {} (b)
+						(b) edge[bend left] node[left, draw=none] {} (c);
+				\end{tikzpicture} &
+				\begin{tikzpicture}[nodes={draw, circle}, ->,
+					level 1/.style={sibling distance=30mm},
+					level 2/.style={sibling distance=15mm}]
+					\node(c){101}
+						child{ node(b){100}
+							child{ node(a){99}
+								child{ node{7} }
+								child[ missing ] }
+							child{ node{88} } }
+						child{ node{98}
+							child{ node{4} }
+							child{ node{1} } };
+				\end{tikzpicture}
+			\end{tabular}
+		\end{center}
+
+		\noindent This movement of the node upwards is commonly called \textbf{bubbling up}.
+
+	\section{Deletion}
+		Deletion is only a tad more difficult. Unlike other data structures, when
+		you delete from a \textbf{heap} (remove would be a better word), you always
+		delete the root. Let's try deleting from the previous example:
+		
+		\begin{center}
+			\begin{tikzpicture}[nodes={draw, circle}, ->,
+				level 1/.style={sibling distance=30mm},
+				level 2/.style={sibling distance=15mm}]
+				\node(c){101}
+					child{ node(b){100}
+						child{ node(a){99}
+							child{ node{7} }
+							child[ missing ] }
+						child{ node{88} } }
+					child{ node{98}
+						child{ node{4} }
+						child{ node{1} } };
+			\end{tikzpicture}
+		\end{center}
+
+		\noindent So we'll be deleting 101. But remember we want to keep the
+		completeness of the tree! So let's take that last node and put it at the root.
+
+		\begin{center}
+			\begin{tikzpicture}[nodes={draw, circle}, ->,
+				level 1/.style={sibling distance=30mm},
+				level 2/.style={sibling distance=15mm}]
+				\node(c){7}
+					child{ node(b){100}
+						child{ node(a){99} }
+						child{ node{88} } }
+					child{ node{98}
+						child{ node{4} }
+						child{ node{1} } };
+			\end{tikzpicture}
+		\end{center}
+
+		\noindent We have a complete tree but something seems off... the relationship
+		is broken again! This time, instead of \textbf{bubbling up}, we will
+		\textbf{bubble down}. 7 is obviously out of place so we should move it down,
+		but which way should it go? We want to satisfy the relationship for these 3 nodes
+		so which of the following arrangements looks good?
+
+		\begin{center}
+			\begin{tabular*}{0.75\textwidth}{@{\extracolsep{\fill}}cccc}
+				&
+				\begin{tikzpicture}[nodes={draw, circle}, ->]
+					\node{100}
+						child{ node{7} }
+						child{ node{98} };
+				\end{tikzpicture} &
+				\begin{tikzpicture}[nodes={draw, circle}, ->]
+					\node{98}
+						child{ node{100} }
+						child{ node{7} };
+				\end{tikzpicture} &
+				&
+			\end{tabular}
+		\end{center}
+
+		\noindent The left one does fixes everything, so it looks like the rule is swap
+		with the maximum of the two children in this case!
+
+		\begin{center}
+			\begin{tikzpicture}[nodes={draw, circle}, ->,
+				level 1/.style={sibling distance=30mm},
+				level 2/.style={sibling distance=15mm}]
+				\node{100}
+					child{ node{7}
+						child{ node{99} }
+						child{ node{88} } }
+					child{ node{98}
+						child{ node{4} }
+						child{ node{1} } };
+			\end{tikzpicture}
+		\end{center}
+
+		\noindent We end up with this but we're still not done; I'll leave the rest as
+		an exercise to the reader. Haha. Well obviously you swap 7 and 99 and then you're
+		finished.
+
+	\section{Array-Based Heap}
+		Arrays... what? Interestingly enough, \textbf{heaps} are typically implemented in
+		arrays instead of having node objects and linking them together with pointers!
+		Let's go back to our previous \textbf{heap} (because it's easier to copy and
+		paste than to make a new example):
+
+		\begin{center}
+			\begin{tikzpicture}[nodes={draw, circle}, ->,
+				level 1/.style={sibling distance=30mm},
+				level 2/.style={sibling distance=15mm}]
+				\node{100}
+					child{ node{99}
+						child{ node{7} }
+						child{ node{88} } }
+					child{ node{98}
+						child{ node{4} }
+						child{ node{1} } };
+			\end{tikzpicture}
+		\end{center}
+
+		\noindent All we have to do is dump these contents into an array left to right, top
+		to bottom. We'll end up getting
+
+		\[
+			100 \rightarrow 99 \rightarrow 98 \rightarrow 7 \rightarrow 88 \rightarrow 4
+			\rightarrow 1
+		\]
+
+		\noindent Let's try to find a way to determine the index of a child if we have the
+		index of the parent. The index of 100 is 0, it's children have indicies 1 and 2;
+		The index of 99 is 1, it's children have indicies 3 and 4; and so on After staring at
+		the numbers multiple times, you might notice the following:
+		\[
+			parent = i; children = 2i + 1, 2i + 2
+		\]
+		So if you know the parent's index, you can get the children with this handy formula. And
+		likewise
+		\[
+			child = i; parent = (i - 1) / 2
+		\]
+		But what about decimals? Use integer division!
+
+
+
+	\section{Examples}
+		Removed for now.
+
+\end{document}
