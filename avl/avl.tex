@@ -1,0 +1,391 @@
+\documentclass[11pt]{book}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{makecell}
+\usepackage{tikz}
+\usetikzlibrary{graphdrawing.trees}
+
+\begin{document}
+	\setcounter{chapter}{4}
+	\chapter{AVL Trees}
+	\section{Introduction}
+		Remember those few minutes weeks ago where we talked about degenerate
+		binary trees and their bad qualities? Well, what if we had a way to avoid
+		that... We do! With \textbf{AVL trees}! They do fancy things to prevent this.
+		They're called \textbf{AVL trees} because they're named after someone but that's
+		not important for knowing how they work. Sorry inventors! \\
+
+		\noindent Do note that \textbf{AVL trees} are only one of several version of
+		self-balancing binary trees. Another example would be a red-black tree
+		which may or may not be covered depending on how much time there is left
+		at the end of the semester.
+
+	\section{Description}
+		You've heard of binary search trees, well the \textbf{AVL tree} is a binary
+		search tree but a lot fancier. The important thing here is \textbf{balance}.
+		When a tree is balanced, this means the heights of the two child subtrees of
+		a node can only differ by up to 1. Let's take a look at multiple examples to
+		understand this. \\
+
+		\noindent Consider this tree. \\
+
+		\noindent What tree? The empty tree of course! Naturally it falls under the
+		category of an \textbf{AVL tree}. Jokes aside, let's look at a tree with 1 node.
+
+		\begin{center}
+			\begin{tikzpicture}[nodes={draw, circle}, ->]
+				\node{10}
+			\end{tikzpicture}
+		\end{center}
+
+		\noindent Consider the one node. Do its two child subtrees' heights differ by more
+		than 1? No, both of those subtrees are empty and have the same height. For this class
+		empty trees are considered to have a height of -1. Alright let's add another node.
+
+		\begin{center}
+			\begin{tikzpicture}[nodes={draw, circle}, ->]
+				\node{10}
+					child{ node{5} }
+					child[ missing ];
+			\end{tikzpicture}
+		\end{center}
+
+		\noindent Is this an \textbf{AVL tree}? Alright, heights for child subtrees for 10
+		are 0 and -1 which works, then heights for child subtrees for 5 are -1 and -1 which
+		also works, so it's good. Let's get a little more complicated:
+
+		\begin{center}
+			\begin{tikzpicture}[nodes={draw, circle}, ->]
+				\node{10}
+					child{ node{5} }
+					child{ node{15}
+						child{ node{13} }
+						child[ missing ] };
+			\end{tikzpicture}
+		\end{center}
+
+		\noindent 10 has heights 0 and 1, 5 has heights -1 and -1, 15 has heights 0 and -1,
+		13 has heights -1 and -1, so yes again this is an \textbf{AVL tree}. Now for a large
+		example:
+
+		\begin{center}
+			\begin{tikzpicture}[nodes={draw, circle}, ->,
+				level 1/.style={sibling distance=30mm},
+				level 2/.style={sibling distance=15mm}]
+				\node{10}
+					child{ node{5}
+						child{ node{2} }
+						child[ missing ] }
+					child{ node{15}
+						child{ node{13} }
+						child{ node{18}
+							child{ node{17} }
+							child[ missing ] } };
+			\end{tikzpicture}
+		\end{center}
+
+		\noindent Is this an \textbf{AVL tree}? Well I'll tell you it is, but you will have
+		to confirm it. Actually there's something interesting going on here that I'll let you
+		in on.
+
+	\section{Searching}
+		This is a binary search tree, searching works no differently.
+
+	\pagebreak
+
+	\section{Self Balancing}
+		Whenever the contents of an \textbf{AVL tree} are modified, there is a
+		potential for rebalancing the tree. One way to keep track of the balance
+		is to keep a number known as the \textbf{balance factor} at each node.
+		This number keeps track of the difference of the heights of the left and
+		right subtrees. Let's look at one of the previous trees:
+
+		\begin{center}
+			\begin{tikzpicture}[nodes={draw, circle}, ->,
+				level 1/.style={sibling distance=30mm},
+				level 2/.style={sibling distance=15mm}]
+				\node{10}
+					child{ node{5}
+						child{ node{2} }
+						child[ missing ] }
+					child{ node{15}
+						child{ node{13} }
+						child{ node{18}
+							child{ node{17} }
+							child[ missing ] } };
+			\end{tikzpicture}
+		\end{center}
+
+		\noindent Right away, we can go ahead and assign the leaves a \textbf{balance factor}
+		of 0 because their subtrees' heights differ by 0. What about for the node 15? The
+		heights of its left and right subtrees are 0 and 1 respectively. We can subtract the
+		left tree's height from the right tree's to get a \textbf{balance factor} of -1. We
+		do this for the rest of the nodes and end up with something like this:
+
+		\begin{center}
+			\begin{tikzpicture}[nodes={draw, circle}, ->,
+				level 1/.style={sibling distance=30mm},
+				level 2/.style={sibling distance=15mm}]
+				\node[label=-1]{10}
+					child{ node[label=1]{5}
+						child{ node[label=0]{2} }
+						child[ missing ] }
+					child{ node[label=-1]{15}
+						child{ node[label=0]{13} }
+						child{ node[label=1]{18}
+							child{ node[label=0]{17} }
+							child[ missing ] } };
+			\end{tikzpicture}
+		\end{center}
+
+		\noindent Whats important to note is that all of these balance factors are between
+		-1 and 1 (inclusive). If they were any higher or lower, then that would mean the
+		heights differ by more than 1 and a \textbf{rotation} would be needed.
+
+	\pagebreak
+
+	\section{Insertion}
+		Insertion is like a normal binary search tree. Let's take out previous tree and
+		insert 16.
+
+		\begin{center}
+			\begin{tikzpicture}[nodes={draw, circle}, ->,
+				level 1/.style={sibling distance=30mm},
+				level 2/.style={sibling distance=15mm}]
+				\node{10}
+					child{ node{5}
+						child{ node{2} }
+						child[ missing ] }
+					child{ node{15}
+						child{ node{13} }
+						child{ node{18}
+							child{ node{17}
+								child{ node{16} }
+								child[ missing ] }
+							child[ missing ] } };
+			\end{tikzpicture}
+		\end{center}
+
+		\noindent Hopefully you have the hang of inserting into a normal binary search tree.
+		But wait, let's also update the balance factors.
+
+		\begin{center}
+			\begin{tikzpicture}[nodes={draw, circle}, ->,
+				level 1/.style={sibling distance=30mm},
+				level 2/.style={sibling distance=15mm}]
+				\node[label=-2]{10}
+					child{ node[label=1]{5}
+						child{ node[label=0]{2} }
+						child[ missing ] }
+					child{ node[label=-2]{15}
+						child{ node[label=0]{13} }
+						child{ node[label=2]{18}
+							child{ node[label=-1]{17}
+								child{ node[label=0]{16} }
+								child[ missing ] }
+							child[ missing ] } };
+			\end{tikzpicture}
+		\end{center}
+
+		\noindent Uh oh, we now have (-)2s as some balance factors. This means we need to
+		\textbf{rotate}. We start from the node we inserted and work our way towards the
+		root until we find a balance factor that is too high or too low. This is node 18.
+		We then pick its children whose balance factors are consecutive to it so we will
+		pick these 3 nodes:
+
+		\begin{center}
+			\begin{tikzpicture}[nodes={draw, circle}, ->]
+						\node[label=-2]{18}
+							child{ node[label=-1]{17}
+								child{ node[label=0]{16} }
+								child[ missing ] }
+							child[ missing ];
+			\end{tikzpicture}
+		\end{center}
+
+		\noindent, now we want to balance this so what we will rotate these nodes to lower
+		the overall height yet keep them as a valid binary search tree arrangement. Can
+		you see how this is done? Just like this:
+
+		\begin{center}
+			\begin{tabular*}{0.75\textwidth}{@{\extracolsep{\fill}}cccc}
+				&
+				\begin{tikzpicture}[nodes={draw, circle}, ->]
+							\node{18}
+								child{ node{17}
+									child{ node{16} }
+									child[ missing ] }
+								child[ missing ];
+				\end{tikzpicture} &
+				\begin{tikzpicture}[nodes={draw, circle}, ->]
+							\node{17}
+								child{ node{16} }
+								child{ node{18} };
+				\end{tikzpicture}
+				&
+			\end{tabular}
+		\end{center}
+
+		\noindent And all that's left is to put it back where it was!  As you can see, the
+		new balance factors are good.
+
+		\begin{center}
+			\begin{tikzpicture}[nodes={draw, circle}, ->,
+				level 1/.style={sibling distance=30mm},
+				level 2/.style={sibling distance=15mm}]
+				\node[label=-1]{10}
+					child{ node[label=1]{5}
+						child{ node[label=0]{2} }
+						child[ missing ] }
+					child{ node[label=-1]{15}
+						child{ node[label=0]{13} }
+						child{ node[label=0]{17}
+								child{ node[label=0]{16} }
+								child{ node[label=0]{18} } } };
+			\end{tikzpicture}
+		\end{center}
+
+		\noindent There are more ways to rotate, but I have a simpler way to remember
+		them all which will be detailed later.
+
+	\section{Deletion}
+		Deletion is the same as a binary search tree, just make sure to rotate if necessary
+		after.
+
+	\pagebreak
+
+	\section{Easy Rotations}
+		Rotations are the core idea behind \textbf{AVL trees} and may be tough. Let's make
+		try to make them simpler. \\
+
+		\noindent One observation you should be able to make is that when inserting or
+		deleting from a binary search tree, only the heights of the subtrees rooted at nodes
+		on the path from the inserted or deleted node to the root are affected. This also
+		suggests that only balance factors along this path are changed .It's a mouthful but
+		let's look at what it means. By going through our insertion example.
+
+		\begin{center}
+			\begin{tabular*}{0.75\textwidth}{@{\extracolsep{\fill}}cccc}
+				&
+				\begin{center}
+					\begin{tikzpicture}[nodes={draw, circle}, ->,
+						level 1/.style={sibling distance=30mm},
+						level 2/.style={sibling distance=15mm}]
+						\node[label=-1]{10}
+							child{ node[label=1]{5}
+								child{ node[label=0]{2} }
+								child[ missing ] }
+							child{ node[label=-1]{15}
+								child{ node[label=0]{13} }
+								child{ node[label=1]{18}
+									child{ node[label=0]{17} }
+									child[ missing ] } };
+					\end{tikzpicture}
+				\end{center} &
+				\begin{tikzpicture}[nodes={draw, circle}, ->,
+					level 1/.style={sibling distance=30mm},
+					level 2/.style={sibling distance=15mm}]
+					\node[label=-2]{10}
+						child{ node[label=1]{5}
+							child{ node[label=0]{2} }
+							child[ missing ] }
+						child{ node[label=-2]{15}
+							child{ node[label=0]{13} }
+							child{ node[label=2]{18}
+								child{ node[label=-1]{17}
+									child{ node[label=0]{16} }
+									child[ missing ] }
+								child[ missing ] } };
+				\end{tikzpicture} &
+				&
+			\end{tabular}
+		\end{center}
+
+	\noindent Remember we inserted 16. The balance factors that changed are the ones on the
+	nodes from 16 to the root, 10. This shows us where we may have to rebalance. \\
+
+	\noindent Picking out 3 nodes is pretty simple - just work your way up from 16. But once
+	you find them, how should you rotate them? How many ways can you arrange 3 nodes such
+	that they are unbalanced? Exactly 4, and since you know that you need to keep the nodes
+	arranged so they are a valid binary search tree, there's no reason to memorize anything
+	(although I've pictured them below). \\
+
+	\noindent One important thing to note is that there may be other subtrees connected
+	to these 3 nodes. Similarly for these, you can also reason out there new positions if
+	necessary.
+
+	\pagebreak
+
+	\begin{center}
+		\begin{tabular*}{0.75\textwidth}{@{\extracolsep{\fill}}cccc}
+			&
+			\begin{tikzpicture}[nodes={draw, circle}, ->]
+						\node{a}
+							child{ node{b}
+								child{ node{c} }
+								child[ missing ] }
+							child[ missing ];
+			\end{tikzpicture} &
+			\begin{tikzpicture}[nodes={draw, circle}, ->]
+						\node{b}
+							child{ node{c} }
+							child{ node{a} };
+			\end{tikzpicture} &
+			&
+		\end{tabular}
+		\begin{tabular*}{0.75\textwidth}{@{\extracolsep{\fill}}cccc}
+			&
+			\begin{tikzpicture}[nodes={draw, circle}, ->]
+						\node{a}
+							child[ missing ]
+							child{ node{b}
+								child[ missing ]
+								child{ node{c} } };
+			\end{tikzpicture} &
+			\begin{tikzpicture}[nodes={draw, circle}, ->]
+						\node{b}
+							child{ node{a} }
+							child{ node{c} };
+			\end{tikzpicture} &
+			&
+		\end{tabular}
+		\begin{tabular*}{0.75\textwidth}{@{\extracolsep{\fill}}cccc}
+			&
+			\begin{tikzpicture}[nodes={draw, circle}, ->]
+						\node{a}
+							child[ missing ]
+							child{ node{b}
+								child{ node{c} }
+								child[ missing ] };
+			\end{tikzpicture} &
+			\begin{tikzpicture}[nodes={draw, circle}, ->]
+						\node{c}
+							child{ node{a} }
+							child{ node{b} };
+			\end{tikzpicture} &
+			&
+		\end{tabular}
+		\begin{tabular*}{0.75\textwidth}{@{\extracolsep{\fill}}cccc}
+			&
+			\begin{tikzpicture}[nodes={draw, circle}, ->]
+						\node{a}
+							child{ node{b}
+								child[ missing ]
+								child{ node{c} } }
+							child[ missing ];
+			\end{tikzpicture} &
+			\begin{tikzpicture}[nodes={draw, circle}, ->]
+						\node{c}
+							child{ node{b} }
+							child{ node{a} };
+			\end{tikzpicture} &
+			&
+		\end{tabular}
+	\end{center}
+
+	\noindent One final note - you may need to rotate multiple times after an insertion or
+	deletion.
+
+	\section{Examples}
+		Removed for now.
+
+\end{document}
