@@ -27,17 +27,6 @@ dependencies:
 library:
   source-dirs: src
 
-executables:
-  avl-exe:
-    main:                Main.hs
-    source-dirs:         app
-    ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
-    dependencies:
-    - avl
-
 tests:
   avl-test:
     main:                Spec.hs
