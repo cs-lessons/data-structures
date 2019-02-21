@@ -33,4 +33,4 @@ module Data.BST
     , printTree
     ) where
 
-import Data.BSTimpl
+import Data.BST.Internal

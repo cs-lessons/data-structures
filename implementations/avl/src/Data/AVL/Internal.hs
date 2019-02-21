@@ -1,4 +1,4 @@
-module Data.AVLimpl where
+module Data.AVL.Internal where
 
 -- | An AVL Tree
 data Tree a

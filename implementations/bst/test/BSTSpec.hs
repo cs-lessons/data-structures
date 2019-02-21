@@ -1,6 +1,6 @@
 module BSTSpec where
 
-import Data.BSTimpl
+import Data.BST.Internal
 import Test.Hspec
 
 spec :: Spec

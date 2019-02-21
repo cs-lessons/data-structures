@@ -34,4 +34,4 @@ module Data.AVL
     , valid
     ) where
 
-import Data.AVLimpl
+import Data.AVL.Internal

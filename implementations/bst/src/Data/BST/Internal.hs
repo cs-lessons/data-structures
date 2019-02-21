@@ -1,4 +1,4 @@
-module Data.BSTimpl where
+module Data.BST.Internal where
 
 -- | An AVL Tree
 data Tree a

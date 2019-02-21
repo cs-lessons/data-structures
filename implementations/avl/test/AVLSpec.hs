@@ -1,6 +1,6 @@
 module AVLSpec where
 
-import Data.AVLimpl
+import Data.AVL.Internal
 import Test.Hspec
 
 spec :: Spec
