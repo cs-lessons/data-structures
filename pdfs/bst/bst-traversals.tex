@@ -1,0 +1,130 @@
+\documentclass[11pt]{book}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usetikzlibrary{graphdrawing.trees}
+
+\begin{document}
+	\setcounter{chapter}{3}
+	\setcounter{section}{7}
+	\section{Traversals/Searches}
+		There are various traversals that you can do on a binary tree.
+	\subsection{Breadth First Traversal/Search (BFS)}
+		The idea of a BFS is to travel along each level of the tree in order
+		starting from its root. Consider the following tree: \\
+		\begin{center}
+			\begin{tikzpicture}[nodes={draw, circle}, ->]
+				\node{3}
+					child{ node{1} }
+					child{ node{5}
+						child{ node{4} }
+						child{ node{6} } };
+			\end{tikzpicture}
+		\end{center}
+		What we want to do is traverse this tree in an order such that the output
+		will be $3, 1, 5, 4, 6$. One way to do this is to rely on a queue and follow
+		the algorithm:
+		\begin{verbatim}
+		Q <- new Queue
+		enqueue root
+		while Q is not empty:
+		    node <- dequeue from Q
+		    enqueue node.left
+		    enqueue node.right
+		    print node
+		\end{verbatim}
+		Let's try this on the above tree. I'll just list the queue contents and what is
+		printed after each iteration of the loop.
+		\begin{align}
+			& Q = [3] & \text{    } & P = [] \\
+			& Q = [1,5] & \text{    } & P = [3] \\
+			& Q = [5] & \text{    } & P = [3,1] \\
+			& Q = [4,6] & \text{    } & P = [3,1,5] \\
+			& Q = [6] & \text{    } & P = [3,1,5,4] \\
+			& Q = [] & \text{    } & P = [3,1,5,4,6] \\
+		\end{align}
+
+	\subsection{Depth First Traversal/Search (DFS)}
+		The idea of a DFS is to go as deep as possible into the tree as possible
+		while searching. One way to achieve this is to replace the queue in the
+		previous algorithm with a stack and enqueue/dequeue with push/pop respectively.
+		Let's see how that goes on the same tree.
+		\begin{align}
+			& S = [3] & \text{    } & P = [] \\
+			& S = [1,5] & \text{    } & P = [3] \\
+			& S = [1,4,6] & \text{    } & P = [3,5] \\
+			& S = [1,4] & \text{    } & P = [3,5,6] \\
+			& S = [1] & \text{    } & P = [3,5,6,4] \\
+			& S = [] & \text{    } & P = [3,5,6,4,1] \\
+		\end{align}
+		An alternate way to perform a DFS is to take advantage of recursion to
+		emulate the stack. It's as simple as
+		\begin{verbatim}
+		function dfs(node)
+		    dfs(node.right)
+		    dfs(node.left)
+		    print node
+		\end{verbatim}
+		Notice that the output is actually different, however the idea was still the
+		same; travel as deep into the tree as possible before doing anything.
+
+	\subsection{Pre/In/Postorder Traversals}
+		These traversals are pretty simple to remember if you memorize the format
+		\begin{verbatim}
+		function traverse(node)
+		    // pre
+		    traverse(node.left)
+		    // in
+		    traverse(node.right)
+		    // post
+		\end{verbatim}
+		A preordering of a tree processes nodes in topological order. This means
+		that the parent is processed before the children. This suggests that you
+		should print the node before visiting the left and right children. \\
+
+		\noindent An inorder traversal actually gives the contents of the binary search
+		tree well, in order. This is done by printing the node after visiting the left
+		subtree but before visiting the right, or as I prefer to say: in between the
+		recursive calls. \\
+
+		\noindent A postorder traversal is the final kind of tree traversal and can be
+		executed by printing the node after traversing both left and right subtrees. \\
+
+		\noindent If we were to perform these three traversals on the above tree, we
+		would get
+		\begin{align}
+			preorder & = & [3,1,5,4,6] \\
+			inorder & = & [1,3,4,5,6] \\
+			postorder & = & [1,4,6,5,3]
+		\end{align}
+
+		\noindent However, there is a simpler way to perform these traversals without
+		stepping through the algorithm by hand. Let's look back at our tree:
+		\begin{center}
+			\begin{tikzpicture}[nodes={draw, circle}, ->]
+				\node{3}
+					child{ node{1} }
+					child{ node{5}
+						child{ node{4} }
+						child{ node{6} } };
+			\end{tikzpicture}
+		\end{center}
+		We notice that our left right recursive calls more or less traverse the
+		tree in a fashion that outlines the structure of the tree starting from
+		the left of the root; $[3,1,5,4,6]$. All we have to do to mimic when we
+		print the node is to mark the node at a spot that represents when it is
+		printed i.e. these 3 spots.
+		\begin{center}
+			\begin{tikzpicture}[nodes={draw, circle}, ->]
+				\node[draw] at (1, 1) (n){n};
+				\node[draw=none] at (0.3, 1) (l);
+				\node[draw=none] at (1, 0.3) (b);
+				\node[draw=none] at (1.7, 1) (r);
+
+				\draw[->] (b) -- (n);
+				\draw[->] (l) -- (n);
+				\draw[->] (r) -- (n)
+			\end{tikzpicture}
+		\end{center}
+		I'll leave it to you to figure out which spot is for which traversal.
+\end{document}
