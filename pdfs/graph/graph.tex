@@ -1,0 +1,152 @@
+\documentclass[11pt]{book}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{makecell}
+\usepackage{tikz}
+\usetikzlibrary{graphdrawing.trees}
+
+\begin{document}
+	\setcounter{chapter}{6}
+	\chapter{Graphs}
+	\section{Introduction}
+		You may have heard about graphs before, however, graphs in CS are not
+		like graphs you have previously encountered in Mathematics... unless
+		you've taken graph theory or something.
+
+	\section{Terminology}
+		\begin{itemize}
+			\item \textbf{vertex} \\
+				A vertex is like a node for a tree. Actually, you might hear me
+				say node instead of vertex a lot because they're interchangeable
+				in this case. They will be represented similarly. \\
+				\begin{center}
+					\begin{tikzpicture}[nodes={draw, circle}, ->]
+						\node{a};
+					\end{tikzpicture}
+				\end{center}
+			\item \textbf{edge} \\
+				An edge is the line between two vertices in a graph. It shows the
+				relationship between the two vertices. Here is an edge with length 1
+				between vertices a and b. \\
+				\begin{center}
+					\begin{tikzpicture}[nodes={draw, circle}, ->]
+						\tikzset{edge/.style={midway,above,draw=none}}
+						\node[draw] at (0, 0) (a){a};
+						\node[draw] at (2, 0) (b){b};
+
+						\draw[-] (a) -- (b) node[edge]{1};
+					\end{tikzpicture}
+				\end{center}
+				Edges can be directed or undirected, which is explained lower. \\
+			\item \textbf{weight} \\
+				The weight of an edge is the number assigned to the edge. \\
+			\item \textbf{adjacent} \\
+				Vertices a and b are adjacent to each other if there is a edge
+				between a and b. \\
+			\item \textbf{loop} \\
+				A loop is an edge that extends from a vertex to itself. \\
+				\begin{center}
+					\begin{tikzpicture}[nodes={draw, circle}, ->]
+						\tikzset{edge/.style={midway,above,draw=none}}
+						\node[draw] at (0, 0) (a){a};
+
+						\draw[->] (a) to [out=110,in=70,looseness=8] (a);
+					\end{tikzpicture}
+				\end{center}
+
+
+			\pagebreak
+
+			\item \textbf{undirected graph} \\
+				An undirected graph is a graph whose edges have no direction. \\
+				\begin{center}
+					\begin{tikzpicture}[nodes={draw, circle}, ->]
+						\tikzset{edge/.style={midway,above,draw=none}}
+						\node[draw] at (0, 0) (a){a};
+						\node[draw] at (2, 0) (b){b};
+						\node[draw] at (0, 2) (c){c};
+						\node[draw] at (2, 2) (d){d};
+
+						\draw[-] (a) -- (c) node[edge,left]{2};
+						\draw[-] (a) -- (b) node[edge]{2};
+						\draw[-] (b) -- (c) node[edge,right]{$2\sqrt{2}$};
+						\draw[-] (c) -- (d) node[edge]{2};
+					\end{tikzpicture}
+				\end{center}
+				As you can see, the edge $\{a, c\}$ is the same as the edge $\{c, a\}$ and
+				the same is true for the other edges.
+			\item \textbf{directed graph} \\
+				A directed graph is a graph whose edges have direction. \\
+				\begin{center}
+					\begin{tikzpicture}[nodes={draw, circle}, ->]
+						\tikzset{edge/.style={midway,above,draw=none}}
+						\node[draw] at (0, 0) (a){a};
+						\node[draw] at (2, 0) (b){b};
+						\node[draw] at (0, 2) (c){c};
+						\node[draw] at (2, 2) (d){d};
+
+						\draw[->] (a) -- (c) node[edge,left]{2};
+						% the numbers in the positioning is the angle of the circle
+						% to start from
+						\draw[->] (a.10) -- (b.170) node[edge]{2};
+						\draw[->] (b.190) -- (a.-10) node[edge,below]{1};
+						\draw[->] (b) -- (c) node[edge,right]{$2\sqrt{2}$};
+						\draw[->] (c) -- (d) node[edge]{2};
+					\end{tikzpicture}
+				\end{center}
+				Here we can see that the edge $\{a, c\}$ exists but the edge $\{c, a\}$
+				doesn't. Furthermore, we can see that the edges $\{a, b\}$ and $\{b, a\}$
+				exist but have different weights.
+			\item \textbf{mixed graph} \\
+				A mixed graph is a graph that has both directed and undirected
+				edges. In other words, you can consider a directed graph a mixed
+				graph with 0 undirected edges and vice versa for an undirected graph. \\
+			\item \textbf{simple graph} \\
+				A simple graph is a graph that does not have multiple edges between
+				any pair of vertices and does not have any loops.
+			\item \textbf{weighted graph} \\
+				A weighted graph is a graph whose edges have weights. \\
+			\item \textbf{complete graph} \\
+				A complete graph is a graph where all pairs of vertices have an edge.
+				In other words, all possible edges exist.
+				\begin{center}
+					\begin{tikzpicture}[nodes={draw, circle}, ->]
+						\tikzset{edge/.style={midway,above,draw=none}}
+						\node[draw] at (0, 0) (a){a};
+						\node[draw] at (2, 0) (b){b};
+						\node[draw] at (0, 2) (c){c};
+						\node[draw] at (2, 2) (d){d};
+
+						\draw[-] (a) -- (b);
+						\draw[-] (a) -- (c);
+						\draw[-] (a) -- (d);
+						\draw[-] (b) -- (c);
+						\draw[-] (b) -- (d);
+						\draw[-] (c) -- (d);
+					\end{tikzpicture}
+				\end{center}
+
+			\pagebreak
+
+			\item \textbf{connected graph} \\
+				A connected graph is a graph where there is a path between all pairs
+				of vertices, otherwise it is a disconnected graph. Here is an example
+				of a disconnected graph. \\
+				\begin{center}
+					\begin{tikzpicture}[nodes={draw, circle}, ->]
+						\tikzset{edge/.style={midway,above,draw=none}}
+						\node[draw] at (0, 0) (a){a};
+						\node[draw] at (2, 0) (b){b};
+						\node[draw] at (4, 0) (c){c};
+
+						\draw[-] (a) -- (b);
+					\end{tikzpicture}
+				\end{center}
+
+			\item \textbf{tree} \\
+				A tree is a graph with no cycles. I'll leave that to you to confirm.
+		\end{itemize}
+
+	\section{Examples}
+		Removed for now.
+
+\end{document}
