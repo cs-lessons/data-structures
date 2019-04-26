@@ -33,7 +33,7 @@
 
 		\begin{center}
 			\begin{tikzpicture}[nodes={draw, circle}, ->]
-				\node{10}
+				\node{10};
 			\end{tikzpicture}
 		\end{center}
 
@@ -222,7 +222,7 @@
 								child{ node{18} };
 				\end{tikzpicture}
 				&
-			\end{tabular}
+			\end{tabular*}
 		\end{center}
 
 		\noindent And all that's left is to put it back where it was!  As you can see, the
@@ -297,7 +297,7 @@
 								child[ missing ] } };
 				\end{tikzpicture} &
 				&
-			\end{tabular}
+			\end{tabular*}
 		\end{center}
 
 	\noindent Remember we inserted 16. The balance factors that changed are the ones on the
@@ -319,67 +319,67 @@
 		\begin{tabular*}{0.75\textwidth}{@{\extracolsep{\fill}}cccc}
 			&
 			\begin{tikzpicture}[nodes={draw, circle}, ->]
-						\node{a}
-							child{ node{b}
-								child{ node{c} }
-								child[ missing ] }
-							child[ missing ];
+				\node{a}
+					child{ node{b}
+						child{ node{c} }
+						child[ missing ] }
+					child[ missing ];
 			\end{tikzpicture} &
 			\begin{tikzpicture}[nodes={draw, circle}, ->]
-						\node{b}
-							child{ node{c} }
-							child{ node{a} };
+				\node{b}
+					child{ node{c} }
+					child{ node{a} };
 			\end{tikzpicture} &
 			&
-		\end{tabular}
+		\end{tabular*}
 		\begin{tabular*}{0.75\textwidth}{@{\extracolsep{\fill}}cccc}
 			&
 			\begin{tikzpicture}[nodes={draw, circle}, ->]
-						\node{a}
-							child[ missing ]
-							child{ node{b}
-								child[ missing ]
-								child{ node{c} } };
+				\node{a}
+					child[ missing ]
+					child{ node{b}
+						child[ missing ]
+						child{ node{c} } };
 			\end{tikzpicture} &
 			\begin{tikzpicture}[nodes={draw, circle}, ->]
-						\node{b}
-							child{ node{a} }
-							child{ node{c} };
+				\node{b}
+					child{ node{a} }
+					child{ node{c} };
 			\end{tikzpicture} &
 			&
-		\end{tabular}
+		\end{tabular*}
 		\begin{tabular*}{0.75\textwidth}{@{\extracolsep{\fill}}cccc}
 			&
 			\begin{tikzpicture}[nodes={draw, circle}, ->]
-						\node{a}
-							child[ missing ]
-							child{ node{b}
-								child{ node{c} }
-								child[ missing ] };
+				\node{a}
+					child[ missing ]
+					child{ node{b}
+						child{ node{c} }
+						child[ missing ] };
 			\end{tikzpicture} &
 			\begin{tikzpicture}[nodes={draw, circle}, ->]
-						\node{c}
-							child{ node{a} }
-							child{ node{b} };
+				\node{c}
+					child{ node{a} }
+					child{ node{b} };
 			\end{tikzpicture} &
 			&
-		\end{tabular}
+		\end{tabular*}
 		\begin{tabular*}{0.75\textwidth}{@{\extracolsep{\fill}}cccc}
 			&
 			\begin{tikzpicture}[nodes={draw, circle}, ->]
-						\node{a}
-							child{ node{b}
-								child[ missing ]
-								child{ node{c} } }
-							child[ missing ];
+				\node{a}
+					child{ node{b}
+						child[ missing ]
+						child{ node{c} } }
+					child[ missing ];
 			\end{tikzpicture} &
 			\begin{tikzpicture}[nodes={draw, circle}, ->]
-						\node{c}
-							child{ node{b} }
-							child{ node{a} };
+				\node{c}
+					child{ node{b} }
+					child{ node{a} };
 			\end{tikzpicture} &
 			&
-		\end{tabular}
+		\end{tabular*}
 	\end{center}
 
 	\noindent One final note - you may need to rotate multiple times after an insertion or

@@ -50,14 +50,14 @@
 		    for each adjacent unvisited vertex y to x
 		        enqueue y
 		        mark y as visited
-		    print y
+		    print x
 		\end{verbatim}
 		All we did is replace root with the initial vertex and enqueue all
 		adjacent unvisited vertices rather than left or right. We have to mark
 		vertices as visited because graphs can have cycles and we do not want
 		to visit the same location twice. Let's see the output of this algorithm
 		on the example graph.
-		\begin{align}
+		\begin{align*}
 			& Q = [a] & \text{    } & P = [] \\
 			& Q = [b,c] & \text{    } & P = [a] \\
 			& Q = [c,e,d] & \text{    } & P = [a,b] \\
@@ -65,7 +65,7 @@
 			& Q = [d,f] & \text{    } & P = [a,b,c,e] \\
 			& Q = [f] & \text{    } & P = [a,b,c,e,d] \\
 			& Q = [] & \text{    } & P = [a,b,c,e,d,f]
-		\end{align}
+		\end{align*}
 		And as we can see it works out. It's not a big deal if we visit E before
 		or after D, however for the exams there will probably be some guidelines
 		to ensure you get a consistent output like visiting adjacent nodes in a
@@ -105,7 +105,7 @@
 		Just like the BFS and DFS algorithms for trees, the DFS algorithm for
 		graphs can be obtained by replacing the queue with a stack and its
 		respective operations. Or recursion.
-		\begin{align}
+		\begin{align*}
 			& S = [a] & \text{    } & P = [] \\
 			& S = [c,b] & \text{    } & P = [a] \\
 			& S = [f,d,b] & \text{    } & P = [a,c] \\
@@ -114,7 +114,7 @@
 			& S = [e,b] & \text{    } & P = [a,c,f,g,d] \\
 			& S = [b] & \text{    } & P = [a,c,f,g,d,e] \\
 			& S = [] & \text{    } & P = [a,c,f,g,d,e,b]
-		\end{align}
+		\end{align*}
 		Notice how the last thing that is visited is actually 1 edge away from
 		where we started. Furthermore, depending on how the contents are printed
 		out, we can find some pretty interesting arrangements.
@@ -169,9 +169,9 @@
 		    print x
 
 		function topological_sort()
-		    for each vertex with no outgoing edges x
+		    for each vertex with no incoming edges x
 		        if x is unvisited
-		            dfs(x)
+		            dfs_helper(x)
 		\end{verbatim}
 		After everything, we will print out the following: $[a, b, c, d, g, e, h,
 		i]$. But remember, we wanted it reversed, so it would come out as $[i, h,
@@ -328,7 +328,7 @@
 				\draw[-] (u) -- (w);
 				\draw[-] (v) -- (w);
 			\end{tikzpicture} \\
-			$dist(\{u, w\}) + (\{w, v\}) < dist(\{u, v\})$
+			$dist(\{u, w\}) + dist(\{w, v\}) < dist(\{u, v\})$
 		\end{center}
 
 		\noindent Consider the following graph:

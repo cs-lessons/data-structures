@@ -70,38 +70,38 @@
 		\noindent As you can see, the hashing function $f$ takes the keys 1-3 and turns
 		them into numbers. In other words:
 
-		\begin{align}
+		\begin{align*}
 			f(key1) &= 1 \\
 			f(key2) &= 0 \\
 			f(key3) &= 2
-		\end{align}
+		\end{align*}
 
 		\noindent When we apply f to one of those keys, we are certain to get a specific
 		output. But you may be wondering about a few cases:
 
-		\begin{align}
+		\begin{align*}
 			f(a) = x, \text{ and } f(b) = x \\
 			g(a) = x, \text{ and } g(a) = y
-		\end{align}
+		\end{align*}
 
 		\noindent (6.5) shouldn't happen because that would ruin the entire hashing idea;
 		could you imagine putting key3 into the first example hashing function and getting
 		0 and 2 sometimes? Awkward! However, (6.1) is possible.
 
 	\section{Collision Resolution}
-		\begin{align}
+		\begin{align*}
 			f(a) = x, \text{ and } f(b) = x
-		\end{align}
+		\end{align*}
 
 		\noindent Two inputs map to the same output. This is virtually unavoidable for
 		any function when given enough keys. Can we think of a simple mathematical example?
 
-		\begin{align}
+		\begin{align*}
 			\text{given } f(x) &= 7 \\
 			f(0) &= 7 \\
 			f(1) &= 7 \\
 			etc.
-		\end{align}
+		\end{align*}
 
 		\noindent Here is a hash function that always returns 1; not very good, but it
 		illustrates the point quite well. As such, there are two categories of
@@ -113,9 +113,9 @@
 		that supports searching, insertion, and removal e.g. lists or binary search
 		trees. Let's look at an example given the simple hashing function.
 
-		\begin{align}
+		\begin{align*}
 			f(x) = x \% 3
-		\end{align}
+		\end{align*}
 
 		\noindent Functions typically end with modulo to limit the possible outputs in
 		order to fit them properly into an array which is one possible underlying data
@@ -331,24 +331,24 @@
 	\subsection{Quadratic Probing}
 		Quadratic probing is very similar to linear hashing. While linear hashing may
 		be though of as two functions $f$ and $g$ such that
-		\begin{align}
+		\begin{align*}
 			g(x) &= \text{hashing function} \\
 			f(i) &= g(x) + i
-		\end{align}
+		\end{align*}
 		where $i$ starts at 0 and is incremented until a space is found, quadratic probing
 		can be represented by these functions
-		\begin{align}
+		\begin{align*}
 			g(x) &= \text{hashing function} \\
 			f(i) &= g(x) + i^2
-		\end{align}
+		\end{align*}
 
 	\subsection{Double Hashing}
 		And just to expand again, double hashing can be represented as
-		\begin{align}
+		\begin{align*}
 			g(x) &= \text{hashing function 1} \\
 			h(x) &= \text{hashing function 2} \\
 			f(i) &= g(x) + i * h(x)
-		\end{align}
+		\end{align*}
 
 	\section{Performance Analysis and Load Factors}
 		Removed for now.
